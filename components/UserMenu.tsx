@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { User } from '@supabase/supabase-js'
@@ -17,7 +17,7 @@ export default function UserMenu() {
   const router = useRouter()
   const supabase = createClient()
 
-  const loadProfile = async (userId: string) => {
+  const loadProfile = useCallback(async (userId: string) => {
     try {
       const { data } = await supabase
         .from('profiles')
@@ -31,7 +31,7 @@ export default function UserMenu() {
     } catch (error) {
       console.error('Error loading profile:', error)
     }
-  }
+  }, [supabase])
 
   useEffect(() => {
     // Get initial user

@@ -75,8 +75,8 @@ export default function QuoteForm() {
     } catch (error: unknown) {
       console.error('QuoteForm full error object:', error)
       console.error('QuoteForm error message:', error instanceof Error ? error.message : "Unknown error")
-      console.error('QuoteForm error details:', (error as any)?.details)
-      console.error('QuoteForm error hint:', (error as any)?.hint)
+      console.error('QuoteForm error details:', (error as { details?: string })?.details)
+      console.error('QuoteForm error hint:', (error as { hint?: string })?.hint)
       setError(`Failed to add quote: ${error instanceof Error ? error.message : "Unknown error"}`)
     } finally {
       setIsSubmitting(false)

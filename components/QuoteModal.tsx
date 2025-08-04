@@ -76,7 +76,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       // Try to include user_id, but handle the case where it doesn't exist
       try {
         insertData.user_id = user.id
-      } catch (e: unknown) {
+      } catch {
         console.log('user_id column might not exist, inserting without it')
       }
 
@@ -100,8 +100,8 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
     } catch (error: unknown) {
       console.error('Full error object:', error)
       console.error('Error message:', error instanceof Error ? error.message : "Unknown error")
-      console.error('Error details:', (error as any)?.details)
-      console.error('Error hint:', (error as any)?.hint)
+      console.error('Error details:', (error as { details?: string })?.details)
+      console.error('Error hint:', (error as { hint?: string })?.hint)
       setError(`Failed to add quote: ${error instanceof Error ? error.message : "Unknown error"}`)
     } finally {
       setIsSubmitting(false)

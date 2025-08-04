@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase'
 import { User } from '@supabase/supabase-js'
 import Image from 'next/image'
@@ -23,7 +23,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
   const supabase = createClient()
   const router = useRouter()
 
-  const loadProfile = async () => {
+  const loadProfile = useCallback(async () => {
     if (!user) return
 
     try {
@@ -44,7 +44,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
     } catch (error: unknown) {
       console.error('Error loading profile:', error)
     }
-  }
+  }, [user, supabase])
 
   useEffect(() => {
     if (isOpen && user) {

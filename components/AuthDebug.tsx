@@ -6,7 +6,7 @@ import { User } from '@supabase/supabase-js'
 
 export default function AuthDebug() {
   const [user, setUser] = useState<User | null>(null)
-  const [session, setSession] = useState<any>(null)
+  const [session, setSession] = useState<{ access_token?: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
 
