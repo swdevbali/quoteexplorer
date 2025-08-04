@@ -99,10 +99,10 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       router.refresh()
     } catch (error: unknown) {
       console.error('Full error object:', error)
-      console.error('Error message:', error.message)
-      console.error('Error details:', error.details)
-      console.error('Error hint:', error.hint)
-      setError(`Failed to add quote: ${error.message || 'Unknown error'}`)
+      console.error('Error message:', error instanceof Error ? error.message : "Unknown error")
+      console.error('Error details:', (error as any)?.details)
+      console.error('Error hint:', (error as any)?.hint)
+      setError(`Failed to add quote: ${error instanceof Error ? error.message : "Unknown error"}`)
     } finally {
       setIsSubmitting(false)
     }

@@ -23,28 +23,6 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
   const supabase = createClient()
   const router = useRouter()
 
-  useEffect(() => {
-    if (isOpen && user) {
-      // Reset error and message states when modal opens
-      setError(null)
-      setMessage(null)
-      // Load existing profile data
-      loadProfile()
-    }
-  }, [isOpen, user, loadProfile])
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen])
-
   const loadProfile = async () => {
     if (!user) return
 
@@ -67,6 +45,28 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
       console.error('Error loading profile:', error)
     }
   }
+
+  useEffect(() => {
+    if (isOpen && user) {
+      // Reset error and message states when modal opens
+      setError(null)
+      setMessage(null)
+      // Load existing profile data
+      loadProfile()
+    }
+  }, [isOpen, user, loadProfile])
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
 
   const uploadAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {

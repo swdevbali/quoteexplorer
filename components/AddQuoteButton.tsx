@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
+import { User } from '@supabase/supabase-js'
 import QuoteModal from './QuoteModal'
 import AuthModalWithWelcome from './AuthModalWithWelcome'
 

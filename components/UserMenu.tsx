@@ -17,6 +17,22 @@ export default function UserMenu() {
   const router = useRouter()
   const supabase = createClient()
 
+  const loadProfile = async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('name, avatar_url')
+        .eq('id', userId)
+        .single()
+      
+      if (data) {
+        setProfile(data)
+      }
+    } catch (error) {
+      console.error('Error loading profile:', error)
+    }
+  }
+
   useEffect(() => {
     // Get initial user
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -40,22 +56,6 @@ export default function UserMenu() {
 
     return () => subscription.unsubscribe()
   }, [supabase.auth, loadProfile])
-
-  const loadProfile = async (userId: string) => {
-    try {
-      const { data } = await supabase
-        .from('profiles')
-        .select('name, avatar_url')
-        .eq('id', userId)
-        .single()
-      
-      if (data) {
-        setProfile(data)
-      }
-    } catch (error) {
-      console.error('Error loading profile:', error)
-    }
-  }
 
   const handleLogout = async () => {
     await supabase.auth.signOut()

@@ -74,10 +74,10 @@ export default function QuoteForm() {
       router.refresh()
     } catch (error: unknown) {
       console.error('QuoteForm full error object:', error)
-      console.error('QuoteForm error message:', error.message)
-      console.error('QuoteForm error details:', error.details)
-      console.error('QuoteForm error hint:', error.hint)
-      setError(`Failed to add quote: ${error.message || 'Unknown error'}`)
+      console.error('QuoteForm error message:', error instanceof Error ? error.message : "Unknown error")
+      console.error('QuoteForm error details:', (error as any)?.details)
+      console.error('QuoteForm error hint:', (error as any)?.hint)
+      setError(`Failed to add quote: ${error instanceof Error ? error.message : "Unknown error"}`)
     } finally {
       setIsSubmitting(false)
     }

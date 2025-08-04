@@ -80,7 +80,7 @@ export default function EditQuoteModal({ quote, isOpen, onClose }: EditQuoteModa
       router.refresh()
     } catch (error: unknown) {
       console.error('Full update error:', error)
-      setError(`Failed to update quote: ${error.message || 'Unknown error'}`)
+      setError(`Failed to update quote: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsSubmitting(false)
     }
