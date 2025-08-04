@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase'
-import { Quote } from '@/types/quote'
 import QuoteList from '@/components/QuoteList'
 import AddQuoteButton from '@/components/AddQuoteButton'
 import SearchBar from '@/components/SearchBar'
@@ -202,7 +201,7 @@ export default async function Home(props: HomeProps) {
               <span>Showing results for:</span>
               {search && (
                 <span className="px-3 py-1 bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 rounded-full">
-                  "{search}"
+                  &ldquo;{search}&rdquo;
                 </span>
               )}
               {category && (

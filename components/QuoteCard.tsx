@@ -78,7 +78,7 @@ export default function QuoteCard({ quote }: QuoteCardProps) {
         
         <div className="relative p-6">
           <div className="absolute -top-4 -right-4 text-8xl text-gray-200 dark:text-gray-700 opacity-50 select-none">
-            "
+            &ldquo;
           </div>
           
           <blockquote className="relative z-10 mb-6">

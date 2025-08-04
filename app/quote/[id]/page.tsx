@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { Quote } from '@/types/quote'
 import Link from 'next/link'
-import Image from 'next/image'
 
 interface QuotePageProps {
   params: Promise<{ id: string }>
@@ -133,7 +132,7 @@ export default async function QuotePage(props: QuotePageProps) {
               {/* Quote Content */}
               <div className="text-center">
                 <blockquote className="text-2xl md:text-3xl lg:text-4xl font-light text-gray-900 dark:text-white leading-relaxed mb-8">
-                  "{quote.content}"
+                  &ldquo;{quote.content}&rdquo;
                 </blockquote>
                 
                 <cite className="text-xl md:text-2xl font-medium text-violet-600 dark:text-violet-400 not-italic">

@@ -8,7 +8,7 @@ import AuthModalWithWelcome from './AuthModalWithWelcome'
 export default function AddQuoteButton() {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false)
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function AddQuoteButton() {
     })
     
     return () => subscription.unsubscribe()
-  }, [])
+  }, [supabase.auth])
 
   const handleButtonClick = () => {
     if (user) {

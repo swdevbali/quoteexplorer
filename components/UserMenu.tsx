@@ -39,7 +39,7 @@ export default function UserMenu() {
     })
 
     return () => subscription.unsubscribe()
-  }, [supabase.auth])
+  }, [supabase.auth, loadProfile])
 
   const loadProfile = async (userId: string) => {
     try {

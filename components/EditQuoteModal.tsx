@@ -78,7 +78,7 @@ export default function EditQuoteModal({ quote, isOpen, onClose }: EditQuoteModa
 
       onClose()
       router.refresh()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Full update error:', error)
       setError(`Failed to update quote: ${error.message || 'Unknown error'}`)
     } finally {

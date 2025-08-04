@@ -67,7 +67,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
 
     try {
       // Check if user_id column exists by first trying without it
-      let insertData: any = {
+      const insertData: Record<string, unknown> = {
         content: content.trim(),
         author: author.trim(),
         category: category.trim() || null
@@ -76,7 +76,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       // Try to include user_id, but handle the case where it doesn't exist
       try {
         insertData.user_id = user.id
-      } catch (e) {
+      } catch (e: unknown) {
         console.log('user_id column might not exist, inserting without it')
       }
 
@@ -97,7 +97,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       setCategory('')
       onClose()
       router.refresh()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Full error object:', error)
       console.error('Error message:', error.message)
       console.error('Error details:', error.details)

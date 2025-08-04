@@ -72,7 +72,7 @@ export default function QuoteForm() {
       setAuthor('')
       setCategory('')
       router.refresh()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('QuoteForm full error object:', error)
       console.error('QuoteForm error message:', error.message)
       console.error('QuoteForm error details:', error.details)

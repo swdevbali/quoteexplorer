@@ -31,7 +31,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
       // Load existing profile data
       loadProfile()
     }
-  }, [isOpen, user])
+  }, [isOpen, user, loadProfile])
 
   useEffect(() => {
     if (isOpen) {
@@ -63,7 +63,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
         setName(data.name || '')
         setAvatarUrl(data.avatar_url || '')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error loading profile:', error)
     }
   }
@@ -100,8 +100,8 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
 
       setAvatarUrl(publicUrl)
       setMessage('Avatar uploaded successfully!')
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'Upload failed')
     } finally {
       setUploading(false)
     }
@@ -151,8 +151,8 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
         onClose()
         router.refresh()
       }, 1500)
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'Upload failed')
     } finally {
       setSaving(false)
     }
