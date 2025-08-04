@@ -37,6 +37,22 @@ export default function QuoteCard({ quote }: QuoteCardProps) {
     e.stopPropagation()
     setIsEditModalOpen(true)
   }
+
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    const url = `${window.location.origin}/quote/${quote.id}`
+    
+    if (navigator.share) {
+      navigator.share({
+        title: `Quote by ${quote.author}`,
+        text: `"${quote.content}" - ${quote.author}`,
+        url: url,
+      })
+    } else {
+      navigator.clipboard.writeText(url)
+      alert('Quote link copied to clipboard!')
+    }
+  }
   const getCategoryColor = (category: string | null) => {
     if (!category) return 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
     
@@ -87,20 +103,26 @@ export default function QuoteCard({ quote }: QuoteCardProps) {
           </div>
           
           <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+            <button
+              onClick={handleShareClick}
+              className="p-1 bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-800 rounded-full shadow-sm transition-colors"
+              title="Share quote"
+            >
+              <svg className="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+              </svg>
+            </button>
             {canEdit && (
               <button
                 onClick={handleEditClick}
-                className="p-1 bg-white/80 hover:bg-white rounded-full shadow-sm transition-colors"
+                className="p-1 bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-800 rounded-full shadow-sm transition-colors"
                 title="Edit quote"
               >
-                <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
               </button>
             )}
-            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
           </div>
         </div>
         

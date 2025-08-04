@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase'
 import { Quote } from '@/types/quote'
 import QuoteList from '@/components/QuoteList'
@@ -7,6 +8,46 @@ import CategoryFilter from '@/components/CategoryFilter'
 import QuoteFilter from '@/components/QuoteFilter'
 import UserMenu from '@/components/UserMenu'
 import Pagination from '@/components/Pagination'
+
+export async function generateMetadata(props: HomeProps): Promise<Metadata> {
+  const resolvedSearchParams = await props.searchParams
+  const search = typeof resolvedSearchParams.search === 'string' ? resolvedSearchParams.search : ''
+  const category = typeof resolvedSearchParams.category === 'string' ? resolvedSearchParams.category : ''
+  const filter = typeof resolvedSearchParams.filter === 'string' ? resolvedSearchParams.filter : ''
+  const page = typeof resolvedSearchParams.page === 'string' ? parseInt(resolvedSearchParams.page) : 1
+
+  let title = "Quote Explorer"
+  let description = "Discover and share inspiring quotes from famous authors, thinkers, and personalities. Create your personal collection and explore wisdom from around the world."
+
+  if (search) {
+    title = `Search: "${search}" | Quote Explorer`
+    description = `Search results for "${search}" - Find inspiring quotes that match your interests.`
+  } else if (category) {
+    title = `${category} Quotes | Quote Explorer`
+    description = `Discover inspiring ${category.toLowerCase()} quotes from famous authors and thinkers.`
+  } else if (filter === 'my-quotes') {
+    title = "My Quotes | Quote Explorer"
+    description = "Your personal collection of favorite quotes and inspiration."
+  }
+
+  if (page > 1) {
+    title = `${title} - Page ${page}`
+  }
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: page > 1 ? `/?page=${page}` : '/',
+    },
+    twitter: {
+      title,
+      description,
+    },
+  }
+}
 
 interface HomeProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -88,9 +129,48 @@ export default async function Home(props: HomeProps) {
     user_id: user?.id 
   })
 
+  // Generate structured data for the homepage
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Quote Explorer",
+    "description": "Discover and share inspiring quotes from famous authors, thinkers, and personalities. Create your personal collection and explore wisdom from around the world.",
+    "url": process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/?search={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": totalQuotes || 0,
+      "itemListElement": quotes?.slice(0, 10).map((quote, index) => ({
+        "@type": "Quotation",
+        "position": index + 1,
+        "text": quote.content,
+        "author": {
+          "@type": "Person",
+          "name": quote.author
+        },
+        "url": `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/quote/${quote.id}`
+      })) || []
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
+      
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="mb-8 flex justify-between items-start">
           <div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
@@ -178,7 +258,8 @@ export default async function Home(props: HomeProps) {
             </div>
           </div>
         </footer>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
